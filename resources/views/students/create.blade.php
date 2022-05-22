@@ -4,7 +4,7 @@
 <div class="content-wrapper">
     <!-- Content Header (Page header) -->
     <!-- Main content -->
-    <section class="content py-3">
+    <section class="content py-5">
         <div class="container-fluid">
           <div class="row">
             <!-- left column -->
@@ -16,31 +16,61 @@
                     </div>
                     <!-- /.card-header -->
                     <!-- form start -->
-                    <form role="form">
+                    <form role="form" action="{{ route('students.store')}}" method="POST">
+                        @csrf
                     <div class="card-body">
                         <div class="form-group">
                             <label for="name">Name:</label>
-                            <input type="text" class="form-control" id="name" placeholder="Enter name">
+                            <input type="text" class="form-control @error('name') is-invalid @enderror" id="name" placeholder="Enter name" name="name" value="{{ old('name') }}">
+                            @error('name')
+                                <small id="bodyhelp" class="form-text text-danger">{{ $message }}</small>
+                            @enderror
                         </div>
                         <div class="form-group">
-                            <label>Date:</label>
-                              <div class="input-group date" id="birth" data-target-input="nearest">
-                                  <input type="text" class="form-control datetimepicker-input" data-target="#birth"/>
-                                  <div class="input-group-append" data-target="#birth" data-toggle="datetimepicker">
-                                      <div class="input-group-text"><i class="fa fa-calendar"></i></div>
-                                  </div>
-                              </div>
-                          </div>
-                        
-                        <div class="form-check">
-                        <input type="checkbox" class="form-check-input" id="exampleCheck1">
-                        <label class="form-check-label" for="exampleCheck1">Check me out</label>
+                            <label for="birth">Date of birth:</label>
+                            <div class="input-group date" id="birth">
+                                <div class="input-group-prepend" data-target="#birth">
+                                    <div class="input-group-text @error('birth') bg-danger @enderror"><i class="fa fa-calendar"></i></div>
+                                </div>
+                                    <input type="text" class="form-control datetimepicker-input @error('birth') is-invalid @enderror" name="birth" data-target="#birth" value="{{ old('birth') }}"/>
+                            </div>
+                            @error('birth')
+                                <small id="bodyhelp" class="form-text text-danger">{{ $message }}</small>
+                            @enderror
                         </div>
+                        <div class="form-group">
+                            <label for="email">Email:</label>
+                            <input type="email" class="form-control @error('email') is-invalid @enderror" id="email" placeholder="Enter email" name="email" value="{{ old('email') }}">
+                            @error('email')
+                                <small id="bodyhelp" class="form-text text-danger">{{ $message }}</small>
+                            @enderror
+                        </div>
+                        {{-- nrc --}}
+                        <div class="form-group">
+                            <label for="nrc">NRC:</label>
+                            <input type="text" class="form-control @error('nrc') is-invalid @enderror" id="nrc" placeholder="Eg-12/KMY(N)123456" name="nrc" value="{{ old('nrc') }}">
+                            @error('nrc')
+                                <small id="bodyhelp" class="form-text text-danger">{{ $message }}</small>
+                            @enderror
+                        </div>
+                        {{-- course --}}
+                        <div class="form-group">
+                            <label for="courses">Choose courses:</label>
+                            <select class="form-control @error('courses') is-invalid @enderror" id="courses" name="courses[]" multiple >
+                                @foreach ($courses as $course )
+                                    <option value="{{ $course->id }}">{{ $course->name }}</option>
+                                @endforeach
+                            </select>
+                            @error('courses')
+                                <small id="bodyhelp" class="form-text text-danger">{{ $message }}</small>
+                            @enderror
+                          </div>
                     </div>
                     <!-- /.card-body -->
     
                     <div class="card-footer">
                         <button type="submit" class="btn btn-primary">Submit</button>
+                        <a href="{{ route('students.index')}}" class="btn btn-danger">Back</a>
                     </div>
                     </form>
                 </div>
@@ -50,12 +80,18 @@
 </div>
 @endsection
 @push('datepicker')
-<script>
+<script type="text/javascript">
     $(document).ready(function(){
-    
-        $('#birth').datetimepicker({
-                   format: 'YYYY-MM-DD'
-               });
+        $('#birth').datepicker({
+            format: 'yyyy/mm/dd',
+            todayHighlight: true,
+            orientation: "bottom auto",
+        });
+        $('#courses').select2({
+                theme: 'bootstrap4',
+                placeholder:"Choose one or more courses you want to attend",
+                tags:true
+            });
     });
    </script>
 @endpush

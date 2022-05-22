@@ -3,22 +3,27 @@
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>AdminLTE 3 | Advanced form elements</title>
+  <title>Student Registration</title>
   <!-- Tell the browser to be responsive to screen width -->
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
+  <link rel="stylesheet" href="{{ asset('css/app.css')}}">
   <!-- Font Awesome -->
   <link rel="stylesheet" href="{{ asset('fontawesome-free/css/all.min.css') }}">
  
   <!-- iCheck for checkboxes and radio inputs -->
   <link rel="stylesheet" href="{{ asset('icheck-bootstrap/icheck-bootstrap.min.css')}}">
-  <link rel="stylesheet" href="{{ asset('daterangepicker/daterangepicker.css')}}">
+  {{-- <link rel="stylesheet" href="{{ asset('daterangepicker/daterangepicker.css')}}"> --}}
+  <link rel="stylesheet" href="{{ asset('bootstrap-datepicker-1.9.0-dist/css/bootstrap-datepicker3.min.css')}}">
+
   <!-- Select2 -->
   <link rel="stylesheet" href="{{ asset('select2/css/select2.min.css') }}">
-  <link rel="stylesheet" href=".{{ asset('select2-bootstrap4-theme/select2-bootstrap4.min.css')}}">
-
+  <link rel="stylesheet" href="{{ asset('select2-bootstrap4-theme/select2-bootstrap4.min.css')}}">
+  {{-- adminlte  --}}
   <link rel="stylesheet" href="{{ asset('css/adminlte.min.css')}}">
-  <link rel="stylesheet" href="{{ asset('css/app.css')}}">
+  {{-- toastr alert --}}
+  <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
+  {{-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.css" /> --}}
 </head>
 <body>   
   <body class="hold-transition sidebar-mini">
@@ -35,8 +40,8 @@
       <!-- Main Sidebar Container -->
       <aside class="main-sidebar sidebar-dark-primary elevation-4">
         <!-- Brand Logo -->
-        <a href="../../index3.html" class="brand-link">
-          <span class="brand-text font-weight-light">AdminLTE 3</span>
+        <a href="{{ route('students.index')}}" class="brand-link">
+          <span class="brand-text font-weight-light">Student Registration</span>
         </a>
     
         <!-- Sidebar -->
@@ -48,15 +53,15 @@
               <!-- Add icons to the links using the .nav-icon class
                    with font-awesome or any other icon font library -->
               <li class="nav-item">
-                <a href="../widgets.html" class="nav-link active">
-                  <i class="nav-icon fas fa-th"></i>
+                <a href="{{ route('students.index')}}" class="nav-link @if(Request::is('students*')){{'active'}} @endif">
+                  <i class="nav-icon fas fa-users"></i>
                   <p>
                     Students
                   </p>
                 </a>
               </li>
               <li class="nav-item">
-                <a href="../widgets.html" class="nav-link">
+                <a href="{{ route('courses.index')}}" class="nav-link @if(Request::is('courses*')){{'active'}} @endif">
                   <i class="nav-icon fas fa-th"></i>
                   <p>
                    Courses
@@ -88,14 +93,17 @@
       <!-- /.control-sidebar -->
     </div>
     <!-- ./wrapper -->
-    
+<script src="{{ asset('js/jquery.min.js')}}"></script>    
 <script src="{{ asset('js/app.js')}}"></script>
-<!-- jQuery -->
+
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
 <!-- Select2 -->
 <script src="{{ asset('select2/js/select2.full.min.js') }}"></script>
-<!-- date-range-picker -->
-<script src="{{ asset('daterangepicker/daterangepicker.js')}}"></script>
+
+
+<script src="{{ asset('bootstrap-datepicker-1.9.0-dist/js/bootstrap-datepicker.min.js') }}" ></script>
+{{-- toastr --}}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
 <!-- AdminLTE App -->
 <script src="{{ asset('js/adminlte.min.js')}}"></script>
 @stack('datepicker')

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Course;
 use App\Models\Student;
 use Illuminate\Http\Request;
 
@@ -14,7 +15,7 @@ class StudentController extends Controller
      */
     public function index()
     {
-        $students=Student::all();
+        $students=Student::latest('id')->get();
         return view('students.index',['students'=>$students]);
     }
 
@@ -25,7 +26,8 @@ class StudentController extends Controller
      */
     public function create()
     {
-       return view('students.create');
+        $courses=Course::all();
+       return view('students.create',['courses'=>$courses]);
     }
 
     /**
@@ -36,7 +38,23 @@ class StudentController extends Controller
      */
     public function store(Request $request)
     {
-        //
+       
+        $request->validate([
+            'name' => ['required','max:255'],
+            'birth' => ['required'],
+            'email'=>['required','email','unique:students,email'],
+            'nrc'=>['required','regex:/^([0-9]{1,2})\/([a-z]{3})\([N]\)[0-9]{6}$/','unique:students,NRC'],
+            'courses'=>['required']
+        ]);
+        $student=Student::create([
+            'name' => $request->name,
+            'date_of_birth'=>$request->birth,
+            'email'=>$request->email,
+            'NRC'=>$request->nrc
+        ]);
+        $student->courses()->attach($request->courses);
+        $request->session()->flash('success','You have successfully added new record!');
+        return redirect()->route('students.index');
     }
 
     /**
@@ -58,7 +76,9 @@ class StudentController extends Controller
      */
     public function edit($id)
     {
-        //
+        $student=Student::find($id);
+        $courses=Course::all();
+        return view('students.edit',['student'=>$student,'courses'=>$courses]);
     }
 
     /**
@@ -70,7 +90,23 @@ class StudentController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+       $student=Student::find($id);
+        $request->validate([
+            'name' => ['required','max:255'],
+            'birth' => ['required'],
+            'email'=>['required','email'],
+            'nrc'=>['required','regex:/^([0-9]{1,2})\/([a-z]{3})\([N]\)[0-9]{6}$/'],
+            'courses'=>['required']
+        ]);
+       Student::where('id',$id)->update([
+            'name' => $request->name,
+            'date_of_birth'=>$request->birth,
+            'email'=>$request->email,
+            'NRC'=>$request->nrc
+        ]);
+        $student->courses()->sync($request->courses);
+        $request->session()->flash('success','You have successfully updated!');
+        return redirect()->route('students.index');
     }
 
     /**
@@ -81,6 +117,13 @@ class StudentController extends Controller
      */
     public function destroy($id)
     {
-        //
+        
+        $student=Student::find($id);
+
+        $student->courses()->detach();
+        $student->delete();
+        $request->session()->flash('danger','Successfully Delected!');
+        return redirect()->route('students.index');
     }
+    
 }

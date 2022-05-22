@@ -4,6 +4,7 @@
 <div class="content-wrapper">
     <!-- Content Header (Page header) -->
     <!-- Main content -->
+    
     <section class="content py-3">
       <div class="container-fluid">
         <div class="row">
@@ -32,7 +33,7 @@
                   <tbody>
                     @foreach ($students as$student )
                     <tr>
-                        <th scope="row">{{ $student->id }}</th>
+                        <th scope="row">{{ ++$loop->index }}</th>
                         <td>{{ $student->name }}</td>
                         <td>{{ $student->date_of_birth }}</td>
                         <td>{{ $student->email }}</td>
@@ -43,10 +44,11 @@
                             @endforeach
                         </td>
                         <td>
-                            <a href="" title="Edit" class="btn btn-primary">
+                            <a href="{{ route('students.edit',$student->id)}}" title="Edit" class="btn btn-primary">
                                 <i class="fas fa-edit blue"></i>
                             </a>
-                            <a href="" title="Delete" class="btn btn-danger">
+                            @method('DELETE')
+                            <a href="{{ route('students.destroy',$student->id)}}" title="Delete" class="btn btn-danger"  onclick="return confirm('Are you sure you want to delete this record?');">
                                 <i class="fas fa-trash red"></i>
                             </a>
                         </td>
@@ -71,5 +73,15 @@
     <!-- /.content -->
   </div>
 @endsection
+@push('datepicker')
+<script>
+    @if(Session::has('success'))
+        toastr.success("{{ Session::get('success') }}");
+    @endif
+    @if(Session::has('danger'))
+        toastr.danger("{{ Session::get('danger') }}");
+    @endif
+</script>
+@endpush
 
 
