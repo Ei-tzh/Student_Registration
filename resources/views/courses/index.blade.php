@@ -27,21 +27,28 @@
                       </tr>
                   </thead>
                   <tbody>
-                    @foreach ($courses as $course )
-                    <tr>
-                        <th scope="row">{{ ++$loop->index }}</th>
-                        <td>{{ $course->name }}</td>
-                        <td>
-                            <a href="{{ route('courses.edit',$course->id)}}" title="Edit" class="btn btn-primary">
-                                <i class="fas fa-edit blue"></i>
-                            </a>
-                            @method('DELETE')
-                            <a href="{{ route('courses.destroy',$course->id)}}" title="Delete" class="btn btn-danger"  onclick="return confirm('Are you sure you want to delete this record?');">
-                                <i class="fas fa-trash red"></i>
-                            </a>
-                        </td>
-                    </tr>
+                    @if ($courses)
+                      @foreach ($courses as $course )
+                      <tr>
+                          <th scope="row">{{ ++$loop->index }}</th>
+                          <td>{{ $course->name }}</td>
+                          <td>
+                              <a href="{{ route('courses.edit',$course->id)}}" title="Edit" class="btn btn-primary">
+                                  <i class="fas fa-edit blue"></i>
+                              </a>
+                              @method('DELETE')
+                              <a href="{{ route('courses.destroy',$course->id)}}" title="Delete" class="btn btn-danger"  onclick="return confirm('Are you sure you want to delete this record?');">
+                                  <i class="fas fa-trash red"></i>
+                              </a>
+                          </td>
+                      </tr>
                     @endforeach
+                    @else
+                    <tr style="height: 80px;">
+                      <td colspan="7" class="text-center py-5">No Records.<a href="{{ route('courses.create')}}">Add New Course</a></td>
+                    </tr>
+                    @endif
+                    
                   
                 </tbody>
                 </table>

@@ -31,29 +31,36 @@
                       </tr>
                   </thead>
                   <tbody>
-                    @foreach ($students as$student )
-                    <tr>
-                        <th scope="row">{{ ++$loop->index }}</th>
-                        <td>{{ $student->name }}</td>
-                        <td>{{ $student->date_of_birth }}</td>
-                        <td>{{ $student->email }}</td>
-                        <td>{{ $student->NRC }}</td>
-                        <td>
-                            @foreach ($student->courses as $course )
-                                <span class="badge bg-success bg-opacity-75">{{ $course->name }}</span>
-                            @endforeach
-                        </td>
-                        <td>
-                            <a href="{{ route('students.edit',$student->id)}}" title="Edit" class="btn btn-primary">
-                                <i class="fas fa-edit blue"></i>
-                            </a>
-                            @method('DELETE')
-                            <a href="{{ route('students.destroy',$student->id)}}" title="Delete" class="btn btn-danger"  onclick="return confirm('Are you sure you want to delete this record?');">
-                                <i class="fas fa-trash red"></i>
-                            </a>
-                        </td>
+                    @if ($students)
+                      @foreach ($students as$student )
+                        <tr>
+                            <th scope="row">{{ ++$loop->index }}</th>
+                            <td>{{ $student->name }}</td>
+                            <td>{{ $student->date_of_birth }}</td>
+                            <td>{{ $student->email }}</td>
+                            <td>{{ $student->NRC }}</td>
+                            <td>
+                                @foreach ($student->courses as $course )
+                                    <span class="badge bg-success bg-opacity-75">{{ $course->name }}</span>
+                                @endforeach
+                            </td>
+                            <td>
+                                <a href="{{ route('students.edit',$student->id)}}" title="Edit" class="btn btn-primary">
+                                    <i class="fas fa-edit blue"></i>
+                                </a>
+                                @method('DELETE')
+                                <a href="{{ route('students.destroy',$student->id)}}" title="Delete" class="btn btn-danger"  onclick="return confirm('Are you sure you want to delete this record?');">
+                                    <i class="fas fa-trash red"></i>
+                                </a>
+                            </td>
+                        </tr>
+                      @endforeach
+                    @else
+                    <tr style="height: 80px;">
+                      <td colspan="7" class="text-center py-5">No Records.<a href="{{ route('students.create')}}">Add New Students</a></td>
                     </tr>
-                    @endforeach
+                    @endif
+                    
                   
                 </tbody>
                 </table>
