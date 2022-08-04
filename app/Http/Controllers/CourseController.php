@@ -14,8 +14,7 @@ class CourseController extends Controller
      */
     public function index()
     {
-        // $courses=Course::latest('id')->get();
-        $courses='';
+        $courses=Course::latest('id')->get();
         return view('courses.index',['courses'=>$courses]);
     }
 
